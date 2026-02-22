@@ -1,7 +1,8 @@
 {
   "name": "Gym Team",
   "short_name": "GymTeam",
-  "start_url": "/gym-team/",
+  "start_url": "/gym-team/index.html",
+  "scope": "/gym-team/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
