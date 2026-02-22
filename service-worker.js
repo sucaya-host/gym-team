@@ -1,9 +1,26 @@
+const CACHE_NAME = "gym-team-v2";
+
 self.addEventListener("install", function(event) {
   event.waitUntil(
-    caches.open("gym-team-cache").then(function(cache) {
+    caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll([
-        "/gym-team/"
+        "/gym-team/",
+        "/gym-team/index.html"
       ]);
+    })
+  );
+});
+
+self.addEventListener("activate", function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(name) {
+          if (name !== CACHE_NAME) {
+            return caches.delete(name);
+          }
+        })
+      );
     })
   );
 });
