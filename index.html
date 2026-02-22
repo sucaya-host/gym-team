@@ -1495,5 +1495,11 @@ renderFoodLog();
 renderRefFoods();
 initNotifStatus();
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/gym-team/service-worker.js");
+}
+</script>
 </body>
 </html>
