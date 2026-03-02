@@ -1,34 +1,29 @@
-const CACHE_NAME = "gym-team-v2";
+const CACHE_NAME = "gymteam-cache-v1";
+const assets = [
+  "/gym-team/",
+  "/gym-team/index.html",
+  "/gym-team/manifest.json",
+  "/gym-team/launchericon-192x192.png",
+  "/gym-team/launchericon-512x512.png"
+];
 
-self.addEventListener("install", function(event) {
+// Install Service Worker
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll([
-        "/gym-team/",
-        "/gym-team/index.html"
-      ]);
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assets);
     })
   );
 });
 
-self.addEventListener("activate", function(event) {
-  event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.map(function(name) {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
-          }
-        })
-      );
-    })
-  );
-});
+// Activate
+self.addEventListener("activate", () => self.clients.claim());
 
-self.addEventListener("fetch", function(event) {
+// Cache first then network
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+    caches.match(event.request).then((cached) => {
+      return cached || fetch(event.request);
     })
   );
 });
